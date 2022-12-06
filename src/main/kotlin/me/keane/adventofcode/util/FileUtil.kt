@@ -8,3 +8,11 @@ import java.util.stream.Stream
  * that streams the output [T].
  */
 fun <T> File.map(mapper: (String) -> T): Stream<T> = bufferedReader().lines().map { mapper(it) }
+
+fun <T> File.fold(initialValue: T, folder: (prev: T, curr: String) -> T): T {
+    var currentValue: T = initialValue
+    forEachLine { line ->
+        currentValue = folder(currentValue, line)
+    }
+    return currentValue
+}
