@@ -9,6 +9,11 @@ import java.util.stream.Stream
  */
 fun <T> File.map(mapper: (String) -> T): Stream<T> = bufferedReader().lines().map { mapper(it) }
 
+fun <T> File.mapIndexed(mapper: (i: Int, s: String) -> T): Stream<T> {
+    var i = 0
+    return bufferedReader().lines().map { s -> mapper(i++, s) }
+}
+
 fun <T> File.fold(initialValue: T, folder: (prev: T, curr: String) -> T): T {
     var currentValue: T = initialValue
     forEachLine { line ->
