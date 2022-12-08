@@ -40,6 +40,38 @@ fun List<List<Tree>>.isVisible(tree: Tree): Boolean {
     return isVisibleFromNorth || isVisibleFromEast || isVisibleFromSouth || isVisibleFromWest
 }
 
+fun List<List<Tree>>.getViewingDistance(tree: Tree): Int {
+    var north = 0
+    for (i in tree.row - 1 downTo 0) {
+        north += 1
+        if (get(i)[tree.col].height >= tree.height) {
+            break
+        }
+    }
+    var east = 0
+    for (i in tree.col + 1 until get(tree.row).size) {
+        east += 1
+        if (get(tree.row)[i].height >= tree.height) {
+            break
+        }
+    }
+    var south = 0
+    for (i in tree.row + 1 until size) {
+        south += 1
+        if (get(i)[tree.col].height >= tree.height) {
+            break
+        }
+    }
+    var west = 0
+    for (i in tree.col - 1 downTo 0) {
+        west += 1
+        if (get(tree.row)[i].height >= tree.height) {
+            break
+        }
+    }
+    return north * east * south * west
+}
+
 fun File.toForest(): List<List<Tree>> = mapIndexed { row, line ->
     line.mapIndexed { col, c ->
         Tree(
